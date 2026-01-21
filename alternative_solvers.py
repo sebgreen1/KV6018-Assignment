@@ -1,7 +1,7 @@
 import random
 from math import sqrt
 from container_instances import create_basic_instances, create_challenging_instances
-
+from visualisation import visualise_packing
 # Shared placement and repair utilities (same as GA)
 
 def place_cylinders(order, cylinders, container):
@@ -118,3 +118,23 @@ if __name__ == "__main__":
         order, score = random_restart_solver(inst)
         print("Random-restart order:", order)
         print("Random-restart fitness:", score)
+
+order, score = greedy_solver(inst)
+placed = place_cylinders(order, inst.cylinders, inst.container)
+repair_centre_of_mass(placed, inst.container)
+
+visualise_packing(
+    placed,
+    inst.container,
+    title=f"Greedy Solution – {inst.name}"
+)
+
+order, score = random_restart_solver(inst)
+placed = place_cylinders(order, inst.cylinders, inst.container)
+repair_centre_of_mass(placed, inst.container)
+
+visualise_packing(
+    placed,
+    inst.container,
+    title=f"Random Restart – {inst.name}"
+)
