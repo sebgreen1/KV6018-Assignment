@@ -1,7 +1,7 @@
 import random
 from math import sqrt
 from container_instances import create_basic_instances, create_challenging_instances
-
+from visualisation import visualise_packing
 # Placement heuristic
 
 def place_cylinders(order, cylinders, container):
@@ -177,3 +177,27 @@ if __name__ == "__main__":
         print(f"\nInstance: {inst.name}")
         print("Best order:", order)
         print("Fitness:", score)
+
+order, score = genetic_algorithm(inst.cylinders, inst.container)
+
+placed = place_cylinders(order, inst.cylinders, inst.container)
+repair_centre_of_mass(placed, inst.container)
+
+visualise_packing(
+    placed,
+    inst.container,
+    title=f"GA Solution – {inst.name} (Fitness = {score})"
+)
+
+for inst in instances:
+    order, score = genetic_algorithm(inst.cylinders, inst.container)
+
+    placed = place_cylinders(order, inst.cylinders, inst.container)
+    repair_centre_of_mass(placed, inst.container)
+
+    visualise_packing(
+        placed,
+        inst.container,
+        title=f"{inst.name} – Fitness {score}"
+    )
+
